@@ -1,0 +1,22 @@
+# node / deps
+node_modules
+.pnpm-store
+
+# build outputs
+dist
+build
+coverage
+
+# env
+.env
+*.env
+
+# generated
+*.log
+
+# migrations
+prisma/migrations
+
+# Docker
+Dockerfile
+.dockerignore
