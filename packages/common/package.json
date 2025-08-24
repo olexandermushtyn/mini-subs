@@ -1,0 +1,19 @@
+{
+  "name": "@minisubs/common",
+  "version": "0.1.0",
+  "private": false,
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "pino": "^9.3.2",
+    "undici": "^6.19.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
