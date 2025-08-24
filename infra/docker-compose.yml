@@ -25,12 +25,14 @@ services:
 
   auth-svc:
     build:
-      context: ../services/auth-svc
+      context: ..
+      dockerfile: services/auth-svc/Dockerfile
     env_file:
       - ../services/auth-svc/.env
     depends_on:
       pg-auth:
         condition: service_healthy
       redis:
-        condition: service_started
-    ports: ['8081:3000']
+        condition: service_healthy
+    ports:
+      - "8081:3000"
