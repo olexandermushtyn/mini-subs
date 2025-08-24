@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:7
+    ports: ['6379:6379']
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pg-auth:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth
+    ports: ['5433:5432']
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  auth-svc:
+    build:
+      context: ../services/auth-svc
+    env_file:
+      - ../services/auth-svc/.env
+    depends_on:
+      pg-auth:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports: ['8081:3000']
