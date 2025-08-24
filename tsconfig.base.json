@@ -9,6 +9,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "outDir": "dist",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": ["node"],
+    "lib": ["ES2022"]
   }
 }
