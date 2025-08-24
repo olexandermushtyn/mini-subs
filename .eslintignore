@@ -1,9 +1,0 @@
-node_modules/
-dist/
-build/
-coverage/
-*.d.ts
-**/*.d.ts
-prisma/migrations/
-.env
-*.env
