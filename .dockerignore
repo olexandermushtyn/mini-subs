@@ -1,0 +1,30 @@
+# Git / VCS
+.git
+.gitignore
+
+# Node deps
+node_modules
+.pnpm-store
+.pnp.*
+
+# Build outputs
+dist
+build
+coverage
+
+# Env / secrets
+.env
+*.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / IDE
+.DS_Store
+.idea
+.vscode

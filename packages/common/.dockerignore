@@ -1,0 +1,20 @@
+# Git
+.git
+.gitignore
+
+# Node deps
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+coverage
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+
+# IDE / OS
+.DS_Store
+.idea
+.vscode
