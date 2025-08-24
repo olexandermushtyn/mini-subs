@@ -1,0 +1,19 @@
+# Source
+src/
+tsconfig.json
+
+# Tests
+__tests__/
+*.spec.ts
+*.test.ts
+
+# Local configs
+*.log
+node_modules/
+coverage/
+dist/**/*.map
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
