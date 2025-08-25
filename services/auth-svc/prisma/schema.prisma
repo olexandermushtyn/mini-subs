@@ -15,16 +15,20 @@ model User {
 }
 
 model Outbox {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   type      String
   version   Int
   payload   Json
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
+  status    String    @default("pending")
+  createdAt DateTime  @default(now())
   sentAt    DateTime?
 }
 
 model ProcessedEvent {
-  id          String   @id
-  processedAt DateTime @default(now())
+  id        String   @id @default(uuid())
+  eventId   String
+  service   String
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, service])
 }

@@ -19,6 +19,10 @@ module.exports = [
       '**/node_modules/**',
       '**/*.d.ts',
       'prisma/migrations/**',
+      '**/*.js',
+      '**/jest.config.ts',
+      '**/global-setup.js',
+      '**/global-teardown.js',
     ],
   },
 

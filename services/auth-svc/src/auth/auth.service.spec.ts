@@ -1,68 +1,80 @@
 /// <reference types="jest" />
-import { Test } from '@nestjs/testing';
-import { JwtService } from '@nestjs/jwt';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from './auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
+import { makeAuthTestbed } from 'test/utils/make-auth-testbed';
 
-type DeepPartial<T> = {
-  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
-};
-
-const prismaMock: DeepPartial<PrismaService> = {
-  user: {
-    findUnique: jest.fn(),
-    create: jest.fn(),
-  },
-  outbox: {
-    create: jest.fn(),
-  },
-};
-
-describe('AuthService.signup', () => {
+describe('AuthService.signup (plain unit)', () => {
+  let prismaMock: Pick<PrismaService, 'user' | 'outbox'>;
+  let jwtMock: jest.Mocked<JwtService>;
   let service: AuthService;
-  let jwt: JwtService;
 
-  beforeEach(async () => {
-    jest.resetAllMocks();
+  beforeEach(() => {
+    prismaMock = {
+      user: {
+        findUnique: jest.fn(),
+        create: jest.fn(),
+      },
+      outbox: {
+        create: jest.fn(),
+      },
+    } as any;
 
-    const moduleRef = await Test.createTestingModule({
-      providers: [
-        AuthService,
-        {
-          provide: JwtService,
-          useValue: { signAsync: jest.fn().mockResolvedValue('token-123') },
-        },
-        { provide: PrismaService, useValue: prismaMock },
-      ],
-    }).compile();
+    jwtMock = {
+      signAsync: jest.fn().mockResolvedValue('token-123'),
+    } as any;
 
-    service = moduleRef.get(AuthService);
-    jwt = moduleRef.get(JwtService);
+    service = new AuthService(prismaMock as any, jwtMock as any);
   });
 
   it('creates user, writes outbox, returns token', async () => {
-    (prismaMock.user!.findUnique as jest.Mock).mockResolvedValue(null);
-    (prismaMock.user!.create as jest.Mock).mockResolvedValue({
+    (prismaMock.user.findUnique as jest.Mock).mockResolvedValue(null);
+    (prismaMock.user.create as jest.Mock).mockResolvedValue({
       id: 'u1',
       email: 'a@b.com',
       passwordHash: 'x',
     });
-    (prismaMock.outbox!.create as jest.Mock).mockResolvedValue({ id: 'evt1' });
+    (prismaMock.outbox.create as jest.Mock).mockResolvedValue({ id: 'evt1' });
 
     const res = await service.signup({
       email: 'a@b.com',
       password: 'Password123',
     });
 
-    expect(prismaMock.user!.findUnique).toHaveBeenCalledWith({
+    expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
       where: { email: 'a@b.com' },
     });
-    expect(prismaMock.user!.create).toHaveBeenCalled();
-    expect(prismaMock.outbox!.create).toHaveBeenCalled();
-    expect(jwt.signAsync).toHaveBeenCalledWith({ sub: 'u1', email: 'a@b.com' });
+    expect(prismaMock.user.create).toHaveBeenCalled();
+    expect(prismaMock.outbox.create).toHaveBeenCalled();
+    expect(jwtMock.signAsync).toHaveBeenCalledWith({
+      sub: 'u1',
+      email: 'a@b.com',
+    });
     expect(res).toEqual({
       token: 'token-123',
       user: { id: 'u1', email: 'a@b.com' },
     });
+  });
+
+  it('signup works', async () => {
+    const { service, prismaMock, jwtMock } = await makeAuthTestbed();
+    prismaMock.user.findUnique.mockResolvedValue(null);
+    prismaMock.user.create.mockResolvedValue({
+      id: 'u1',
+      email: 'a@b.com',
+      passwordHash: 'x',
+    });
+    prismaMock.outbox.create.mockResolvedValue({ id: 'evt1' });
+
+    const res = await service.signup({
+      email: 'a@b.com',
+      password: 'Password123',
+    });
+
+    expect(jwtMock.signAsync).toHaveBeenCalledWith({
+      sub: 'u1',
+      email: 'a@b.com',
+    });
+    expect(res.user.email).toBe('a@b.com');
   });
 });

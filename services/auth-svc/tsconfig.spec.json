@@ -2,9 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["node", "jest"],
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": { "src/*": ["src/*"] }
+    "noEmit": true
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.e2e-spec.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.e2e-spec.ts", "test/**/*.ts"]
 }
