@@ -19,7 +19,9 @@
     "test:e2e": "jest -c jest.config.ts --testMatch '**/*.e2e-spec.ts'",
     "dev": "nest start --watch",
     "prisma": "prisma",
-    "migrate": "prisma migrate dev"
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
     "@minisubs/common": "workspace:*",
