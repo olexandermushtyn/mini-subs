@@ -23,12 +23,3 @@ model Outbox {
   createdAt DateTime  @default(now())
   sentAt    DateTime?
 }
-
-model ProcessedEvent {
-  id        String   @id @default(uuid())
-  eventId   String
-  service   String
-  createdAt DateTime @default(now())
-
-  @@unique([eventId, service])
-}

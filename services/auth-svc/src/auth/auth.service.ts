@@ -16,6 +16,7 @@ export class AuthService {
     const exists = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
+
     if (exists) throw new UnauthorizedException('Email already in use');
     const passwordHash = await bcrypt.hash(dto.password, 10);
 
