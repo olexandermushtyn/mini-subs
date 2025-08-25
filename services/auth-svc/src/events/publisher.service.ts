@@ -32,19 +32,11 @@ export class PublisherService implements OnModuleInit, OnModuleDestroy {
   }
 
   private async flush() {
-    console.log('flush');
-
-    const allEvents = await this.prisma.outbox.findMany({
-      orderBy: { createdAt: 'asc' },
-    });
-    console.log('allEvents', allEvents);
-
     const events = await this.prisma.outbox.findMany({
       where: { status: 'pending' },
       orderBy: { createdAt: 'asc' },
       take: 50,
     });
-    console.log('events', events);
     if (!events.length) return;
 
     this.logger.debug({ count: events.length }, 'publisher:found-pending');

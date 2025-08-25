@@ -13,9 +13,6 @@ export class PrismaService
 
   async onModuleInit() {
     await this.$connect();
-    const result = await this.$queryRawUnsafe('select current_database()');
-    const [{ current_database }] = result as { current_database: string }[];
-    console.log('APP DB:', current_database, process.env.DATABASE_URL);
   }
   async onModuleDestroy() {
     await this.$disconnect();

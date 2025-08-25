@@ -37,8 +37,6 @@ export class AuthService {
       },
     });
 
-    console.log('outbox created');
-
     const token = await this.jwt.signAsync({ sub: user.id, email: user.email });
     return { token, user: { id: user.id, email: user.email } };
   }
