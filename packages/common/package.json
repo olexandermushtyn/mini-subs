@@ -5,15 +5,22 @@
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@nestjs/common": "^11.1.6",
+    "bullmq": "5.58.1",
+    "ioredis": "5.7.0",
     "pino": "^9.3.2",
     "undici": "^6.19.2"
   },
   "devDependencies": {
+    "@types/ioredis": "5.0.0",
+    "@types/node": "24.3.0",
     "typescript": "^5.5.4"
   }
 }

@@ -64,6 +64,7 @@ module.exports = [
         'warn',
         { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/no-duplicate-imports': ['error', { allowTypeImports: true }],
 
       'no-redeclare': 'off',
       '@typescript-eslint/no-redeclare': ['error', { ignoreDeclarationMerge: true }],
