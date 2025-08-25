@@ -1,4 +1,5 @@
 const { PostgreSqlContainer } = require('@testcontainers/postgresql');
+const { RedisContainer } = require('@testcontainers/redis');
 const { execSync } = require('child_process');
 const path = require('path');
 
@@ -9,14 +10,18 @@ module.exports = async () => {
     .withPassword('test')
     .start();
 
-  // pass URL for Prisma/Nest in this Jest process
-  process.env.DATABASE_URL = pg.getConnectionUri();
-  process.env.NODE_ENV = 'test';
-  global.__PG__ = pg;
+  const redis = await new RedisContainer('redis:7-alpine').start();
 
-  // apply ALL migrations for the newly created DB
+  process.env.DATABASE_URL = pg.getConnectionUri();
+  process.env.REDIS_URL = `redis://${redis.getHost()}:${redis.getMappedPort(6379)}`;
+  process.env.PRISMA_SKIP_ENV_LOAD = '1';
+  process.env.NODE_ENV = 'test';
+
+  global.__PG__ = pg;
+  global.__REDIS__ = redis;
+
   execSync('pnpm exec prisma migrate deploy', {
     stdio: 'inherit',
-    cwd: path.resolve(__dirname, '..'), // <- services/auth-svc
+    cwd: path.resolve(__dirname, '..'),
   });
 };

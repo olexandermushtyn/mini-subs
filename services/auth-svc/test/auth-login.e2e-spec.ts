@@ -61,8 +61,6 @@ describe('AuthSvc (e2e) – POST /v1/auth/login', () => {
       .send({ email, password: 'WrongPass' })
       .expect(401);
 
-    console.log(res.body);
-
     expect((res.body.message || '').toLowerCase()).toContain('invalid');
   });
 

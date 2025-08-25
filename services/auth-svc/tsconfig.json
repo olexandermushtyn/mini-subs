@@ -11,7 +11,9 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "test/*": ["test/*"],
+      "test/utils/*": ["test/utils/*"]
     }
   },
   "include": ["src", "jest.config.ts", "test/**/*"],

@@ -1,20 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe, LogLevel } from '@nestjs/common';
-
-function resolveLogLevels(): LogLevel[] {
-  const env = (process.env.LOG_LEVEL || 'log').toLowerCase();
-  const allowed: LogLevel[] = ['log', 'error', 'warn', 'debug', 'verbose'];
-  return allowed.includes(env as LogLevel)
-    ? [env as LogLevel]
-    : ['log', 'error', 'warn'];
-}
+import { ValidationPipe } from '@nestjs/common';
+import { PinoLogger } from '@minisubs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-    logger: resolveLogLevels(),
   });
+  app.useLogger(app.get(PinoLogger));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.enableShutdownHooks();
   await app.listen(

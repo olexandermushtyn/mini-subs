@@ -5,7 +5,7 @@ import request from 'supertest';
 import { AppModule } from 'src/app.module';
 import { prisma, resetDb } from './utils/db';
 
-describe('AuthSvc (e2e) – POST /v1/auth/signup', () => {
+describe('AuthSvc (e2e) - POST /v1/auth/signup', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -50,12 +50,24 @@ describe('AuthSvc (e2e) – POST /v1/auth/signup', () => {
     });
     expect(dbUser).not.toBeNull();
 
-    // Check outbox
-    const outbox = await prisma.outbox.findMany({
-      orderBy: { createdAt: 'desc' },
+    // Check outbox - verify it was created
+    const outboxEvents = await prisma.outbox.findMany();
+    expect(outboxEvents.length).toBeGreaterThan(0);
+    expect(outboxEvents[0].type).toBe('user.created');
+    expect(outboxEvents[0].version).toBe(1);
+    expect(outboxEvents[0].status).toBe('pending');
+
+    // Verify payload structure
+    expect(outboxEvents[0].payload).toMatchObject({
+      id: expect.any(String),
+      type: 'user.created',
+      version: 1,
+      occurredAt: expect.any(String),
+      data: {
+        userId: dbUser!.id,
+        email: payload.email,
+      },
     });
-    expect(outbox.length).toBeGreaterThan(0);
-    expect(outbox[0]).toMatchObject({ type: 'user.created', version: 1 });
   });
 
   it('rejects duplicate email with 401', async () => {

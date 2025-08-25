@@ -65,6 +65,8 @@ module.exports = [
         { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/no-duplicate-imports': ['error', { allowTypeImports: true }],
+      '@typescript-eslint/no-floating-promises': 'warn',
+      '@typescript-eslint/no-misused-promises': 'warn',
 
       'no-redeclare': 'off',
       '@typescript-eslint/no-redeclare': ['error', { ignoreDeclarationMerge: true }],

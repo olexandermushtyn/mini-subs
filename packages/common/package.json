@@ -8,14 +8,34 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./redis": {
+      "require": "./dist/redis/redis.module.js",
+      "types": "./dist/redis/redis.module.d.ts"
+    },
+    "./logger": {
+      "require": "./dist/logger/logger.module.js",
+      "types": "./dist/logger/logger.module.d.ts"
+    },
+    "./http": {
+      "require": "./dist/http/http.module.js",
+      "types": "./dist/http/http.module.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",
     "bullmq": "5.58.1",
     "ioredis": "5.7.0",
     "pino": "^9.3.2",
+    "pino-pretty": "13.1.1",
     "undici": "^6.19.2"
   },
   "devDependencies": {

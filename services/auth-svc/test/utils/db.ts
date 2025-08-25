@@ -5,6 +5,10 @@ export const prisma = new PrismaClient();
 /** Hard reset of tables between tests */
 export async function resetDb() {
   // conditional truncate for each table
+  const result = await prisma.$queryRawUnsafe('select current_database()');
+  const [{ current_database }] = result as { current_database: string }[];
+  console.log('TEST DB:', current_database, process.env.DATABASE_URL);
+
   await prisma.$executeRawUnsafe(`
     DO $$
     BEGIN
