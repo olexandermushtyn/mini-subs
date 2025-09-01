@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { HealthController } from './health.controller';
 
 import { LoggerModule, RedisModule, BULLMQ_CONNECTION } from '@minisubs/common';
 import { ConnectionOptions, Queue } from 'bullmq';
@@ -15,6 +16,7 @@ import { PublisherService } from './events/publisher.service';
     LoggerModule,
     RedisModule.forRoot(),
   ],
+  controllers: [HealthController],
   providers: [
     {
       provide: 'EVENTS_QUEUE',

@@ -4,6 +4,7 @@ import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { USER_CREATED_V1 } from '@minisubs/contracts';
 
 @Injectable()
 export class AuthService {
@@ -26,14 +27,11 @@ export class AuthService {
 
     await this.prisma.outbox.create({
       data: {
-        type: 'user.created',
+        type: USER_CREATED_V1,
         version: 1,
         payload: {
           id: crypto.randomUUID(),
-          type: 'user.created',
-          version: 1,
-          occurredAt: new Date().toISOString(),
-          data: { userId: user.id, email: user.email },
+          email: user.email,
         },
       },
     });

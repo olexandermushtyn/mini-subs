@@ -42,10 +42,29 @@ services:
       dockerfile: services/auth-svc/Dockerfile
     env_file:
       - ../services/auth-svc/.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://postgres:postgres@pg-auth:5432/auth
     depends_on:
       pg-auth:
         condition: service_healthy
       redis:
         condition: service_healthy
     ports:
-      - '8081:3000'
+      - '3000:3000'
+
+  subscriptions-svc:
+    build:
+      context: ..
+      dockerfile: services/subscriptions-svc/Dockerfile
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://postgres:postgres@pg-subs:5432/subscriptions
+      - PORT=3001
+    ports:
+      - '3001:3001'
+    depends_on:
+      pg-subs:
+        condition: service_healthy
+      redis:
+        condition: service_healthy

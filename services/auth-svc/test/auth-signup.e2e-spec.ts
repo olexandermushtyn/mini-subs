@@ -53,20 +53,14 @@ describe('AuthSvc (e2e) - POST /v1/auth/signup', () => {
     // Check outbox - verify it was created
     const outboxEvents = await prisma.outbox.findMany();
     expect(outboxEvents.length).toBeGreaterThan(0);
-    expect(outboxEvents[0].type).toBe('user.created');
+    expect(outboxEvents[0].type).toBe('user.created.v1');
     expect(outboxEvents[0].version).toBe(1);
     expect(outboxEvents[0].status).toBe('pending');
 
     // Verify payload structure
     expect(outboxEvents[0].payload).toMatchObject({
       id: expect.any(String),
-      type: 'user.created',
-      version: 1,
-      occurredAt: expect.any(String),
-      data: {
-        userId: dbUser!.id,
-        email: payload.email,
-      },
+      email: payload.email,
     });
   });
 
