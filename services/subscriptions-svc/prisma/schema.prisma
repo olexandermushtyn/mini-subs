@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Subscriber {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  email     String
+  createdAt DateTime @default(now())
+}
+
+model ProcessedEvent {
+  id        String   @id @default(uuid())
+  eventId   String
+  service   String
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, service])
+}
