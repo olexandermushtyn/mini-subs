@@ -4,8 +4,8 @@
     "rootDir": "src",
     "outDir": "dist",
     "module": "commonjs",
-    "target": "ES2021",
-    "lib": ["ES2021"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -14,7 +14,8 @@
     "useDefineForClassFields": false,
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "@prisma/client": ["node_modules/.prisma/client"]
     }
   },
   "include": ["src/**/*.ts"]
