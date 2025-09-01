@@ -14,7 +14,8 @@
     "useDefineForClassFields": false,
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "@prisma/client": ["node_modules/.prisma/client"]
     }
   },
   "include": ["src/**/*.ts"]
